@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECL Tech Stack Pipeline</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0a0e1a 0%, #111827 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 50px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            width: 100%;
+        }
+
+        .node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .node-box {
+            width: 100%;
+            padding: 16px 12px;
+            border-radius: 14px;
+            text-align: center;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .node-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .node-title {
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .node-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .node-item {
+            font-size: 10.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #cbd5e1;
+            text-align: center;
+        }
+
+        .new {
+            color: #fbbf24;
+        }
+
+        .arrow-wrap {
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            flex-shrink: 0;
+        }
+
+        .arrow-wrap svg {
+            width: 20px;
+            height: 16px;
+        }
+
+        /* Colors */
+        .n1 .node-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .n1 .node-title {
+            color: #fbbf24;
+        }
+
+        .n2 .node-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .n2 .node-title {
+            color: #60a5fa;
+        }
+
+        .n3 .node-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+        }
+
+        .n3 .node-title {
+            color: #f87171;
+        }
+
+        .n4 .node-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .n4 .node-title {
+            color: #a78bfa;
+        }
+
+        .n5 .node-box {
+            background: rgba(52, 211, 153, 0.1);
+            border: 2px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .n5 .node-title {
+            color: #6ee7b7;
+        }
+
+        .n6 .node-box {
+            background: rgba(96, 165, 250, 0.1);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .n6 .node-title {
+            color: #93c5fd;
+        }
+
+        .n7 .node-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .n7 .node-title {
+            color: #4ade80;
+        }
+
+        .bottom-bar {
+            position: absolute;
+            bottom: 24px;
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .bottom-bar .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bottom-bar .stat .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot.green {
+            background: #4ade80;
+        }
+
+        .dot.blue {
+            background: #60a5fa;
+        }
+
+        .dot.purple {
+            background: #a78bfa;
+        }
+
+        .dot.red {
+            background: #f87171;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide">
+        <h1>ECL TECHNICAL PIPELINE</h1>
+        <div class="sub">Document → Experts → Validation → Graph → MCP → Agent</div>
+
+        <div class="pipeline">
+            <!-- 1: Input -->
+            <div class="node n1">
+                <div class="node-box">
+                    <div class="node-icon">📄</div>
+                    <div class="node-title">DOCUMENT INPUT</div>
+                    <div class="node-items">
+                        <div class="node-item">Tower Reports</div>
+                        <div class="node-item">Contracts</div>
+                        <div class="node-item">Medical Records</div>
+                        <div class="node-item">Financial Docs</div>
+                        <div class="node-item new">📎 SharePoint</div>
+                        <div class="node-item new">🏢 Dynamics 365</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 2: MoE -->
+            <div class="node n2">
+                <div class="node-box">
+                    <div class="node-icon">🧠</div>
+                    <div class="node-title">MoE EXPERTS</div>
+                    <div class="node-items">
+                        <div class="node-item">📄 ContractExpert</div>
+                        <div class="node-item">⚙️ EquipmentExpert</div>
+                        <div class="node-item">💰 FinancialRiskExpert</div>
+                        <div class="node-item">🎯 OpportunityExpert</div>
+                        <div class="node-item new">🏥 HealthcareExpert</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 3: Validation -->
+            <div class="node n3">
+                <div class="node-box">
+                    <div class="node-icon">✅</div>
+                    <div class="node-title">VALIDATION</div>
+                    <div class="node-items">
+                        <div class="node-item new">🚫 Hallucination Guard</div>
+                        <div class="node-item new">📊 Confidence ≥ 0.70</div>
+                        <div class="node-item new">🏷️ Entity Grounding</div>
+                        <div class="node-item new">⏱️ Timing Metrics</div>
+                        <div class="node-item new">📋 Pipeline Trace</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 4: LLM -->
+            <div class="node n4">
+                <div class="node-box">
+                    <div class="node-icon">🤖</div>
+                    <div class="node-title">OLLAMA LLM</div>
+                    <div class="node-items">
+                        <div class="node-item">Llama 3 8B</div>
+                        <div class="node-item">Mistral 7B</div>
+                        <div class="node-item">Gemma 2 9B</div>
+                        <div class="node-item new">Model Versioning</div>
+                        <div class="node-item new">Prompt Versioning</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 5: Graph -->
+            <div class="node n5">
+                <div class="node-box">
+                    <div class="node-icon">🕸️</div>
+                    <div class="node-title">FALKORDB</div>
+                    <div class="node-items">
+                        <div class="node-item">Typed Entities</div>
+                        <div class="node-item">Weighted Edges</div>
+                        <div class="node-item">Cypher Queries</div>
+                        <div class="node-item new">Governance</div>
+                        <div class="node-item new">Retention Policy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 6: MCP -->
+            <div class="node n6">
+                <div class="node-box">
+                    <div class="node-icon">🔧</div>
+                    <div class="node-title">MCP SERVER</div>
+                    <div class="node-items">
+                        <div class="node-item">get_tower_context</div>
+                        <div class="node-item">find_opportunities</div>
+                        <div class="node-item">assess_risk</div>
+                        <div class="node-item">search_entities</div>
+                        <div class="node-item new">get_trace</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-wrap"><svg viewBox="0 0 20 16">
+                    <path d="M0 8h14m0 0l-5-5m5 5l-5 5" fill="none" stroke="#475569" stroke-width="1.5" />
+                </svg></div>
+
+            <!-- 7: Consumption -->
+            <div class="node n7">
+                <div class="node-box">
+                    <div class="node-icon">🎯</div>
+                    <div class="node-title">CONSUMPTION</div>
+                    <div class="node-items">
+                        <div class="node-item">AI Agents</div>
+                        <div class="node-item">Copilots</div>
+                        <div class="node-item new">🧪 ECL Studio</div>
+                        <div class="node-item">Dashboards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <div class="stat"><span class="dot green"></span> 29 Tests Passing</div>
+            <div class="stat"><span class="dot blue"></span> 5 MoE Experts</div>
+            <div class="stat"><span class="dot purple"></span> 6 MCP Tools</div>
+            <div class="stat"><span class="dot red"></span> $0 LLM Cost</div>
+        </div>
+    </div>
+</body>
+
+</html>

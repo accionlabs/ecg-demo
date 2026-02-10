@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECL Workflow Pipeline</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0a0e1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 40px 60px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .stage {
+            width: 310px;
+            padding: 30px 24px;
+            border-radius: 16px;
+            position: relative;
+            text-align: center;
+        }
+
+        .stage.extract {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .stage.context {
+            background: rgba(167, 139, 250, 0.1);
+            border: 2px solid rgba(167, 139, 250, 0.4);
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
+        }
+
+        .stage.link {
+            background: rgba(52, 211, 153, 0.1);
+            border: 2px solid rgba(52, 211, 153, 0.4);
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.15);
+        }
+
+        .stage-num {
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        .extract .stage-num {
+            background: #3b82f6;
+        }
+
+        .context .stage-num {
+            background: #a78bfa;
+        }
+
+        .link .stage-num {
+            background: #34d399;
+            color: #0a0e1a;
+        }
+
+        .stage-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+        }
+
+        .extract .stage-title {
+            color: #60a5fa;
+        }
+
+        .context .stage-title {
+            color: #c4b5fd;
+        }
+
+        .link .stage-title {
+            color: #6ee7b7;
+        }
+
+        .experts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .expert-badge {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #93c5fd;
+        }
+
+        .stage-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .items {
+            text-align: left;
+            margin-top: 4px;
+        }
+
+        .items div {
+            font-size: 13px;
+            padding: 4px 0;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .items div span.icon {
+            font-size: 14px;
+        }
+
+        .arrow {
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .arrow svg {
+            width: 40px;
+            height: 24px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 14px;
+            color: #475569;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            color: #60a5fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide">
+        <h1>ECL WORKFLOW PIPELINE</h1>
+        <div class="subtitle">EXTRACT → CONTEXT → LINK</div>
+
+        <div class="pipeline">
+            <!-- EXTRACT -->
+            <div class="stage extract">
+                <div class="stage-num">1</div>
+                <div class="stage-title">EXTRACT</div>
+                <div class="experts">
+                    <div class="expert-badge">📄 Contract</div>
+                    <div class="expert-badge">⚙️ Equipment</div>
+                    <div class="expert-badge">💰 Financial</div>
+                    <div class="expert-badge">🛡️ Risk</div>
+                    <div class="expert-badge">🎯 Opportunity</div>
+                </div>
+                <div class="stage-label">5 MoE Domain Experts</div>
+            </div>
+
+            <div class="arrow">
+                <svg viewBox="0 0 40 24">
+                    <path d="M0 12h32m0 0l-8-8m8 8l-8 8" fill="none" stroke="#60a5fa" stroke-width="2" />
+                </svg>
+            </div>
+
+            <!-- CONTEXT -->
+            <div class="stage context">
+                <div class="stage-num">2</div>
+                <div class="stage-title">CONTEXT</div>
+                <div class="items">
+                    <div><span class="icon">🏷️</span> Typed Entities</div>
+                    <div><span class="icon">🔗</span> Weighted Relationships</div>
+                    <div><span class="icon">📊</span> Confidence Scores</div>
+                    <div><span class="icon">✅</span> Entity Validation</div>
+                </div>
+            </div>
+
+            <div class="arrow">
+                <svg viewBox="0 0 40 24">
+                    <path d="M0 12h32m0 0l-8-8m8 8l-8 8" fill="none" stroke="#a78bfa" stroke-width="2" />
+                </svg>
+            </div>
+
+            <!-- LINK -->
+            <div class="stage link">
+                <div class="stage-num">3</div>
+                <div class="stage-title">LINK</div>
+                <div class="items">
+                    <div><span class="icon">🗄️</span> FalkorDB Graph</div>
+                    <div><span class="icon">🔧</span> 6 MCP Tools</div>
+                    <div><span class="icon">📋</span> Full Audit Trail</div>
+                    <div><span class="icon">🤖</span> AI Agent Ready</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">Every extraction is <span>traced</span>, <span>validated</span>, and
+            <span>confidence-scored</span></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Enterprise AI Data Stack</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(180deg, #0d1117 0%, #0a0e1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 60px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .layer {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            border-radius: 12px;
+            position: relative;
+            min-height: 68px;
+        }
+
+        .layer-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 13px;
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .layer-name {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            min-width: 160px;
+        }
+
+        .layer-items {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .layer-item {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .new-badge {
+            background: #f59e0b;
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 4px;
+        }
+
+        /* Layer colors */
+        .l1 {
+            background: linear-gradient(90deg, rgba(100, 116, 139, 0.2), rgba(100, 116, 139, 0.1));
+            border: 2px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .l2 {
+            background: linear-gradient(90deg, rgba(251, 146, 60, 0.15), rgba(251, 146, 60, 0.05));
+            border: 2px solid rgba(251, 146, 60, 0.3);
+        }
+
+        .l3 {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+        }
+
+        .l3 .layer-name::after {
+            content: 'ECL ZONE';
+            margin-left: 12px;
+            font-size: 11px;
+            background: #ef4444;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .l4 {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05));
+            border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .l5 {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .l6 {
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .l1 .layer-name {
+            color: #94a3b8;
+        }
+
+        .l2 .layer-name {
+            color: #fb923c;
+        }
+
+        .l3 .layer-name {
+            color: #f87171;
+        }
+
+        .l4 .layer-name {
+            color: #a78bfa;
+        }
+
+        .l5 .layer-name {
+            color: #60a5fa;
+        }
+
+        .l6 .layer-name {
+            color: #4ade80;
+        }
+
+        .arrow-up {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 11px;
+            color: #334155;
+            letter-spacing: 2px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: none;
+            left: 16px;
+            top: 20%;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide">
+        <h1>ENTERPRISE AI DATA STACK</h1>
+        <div class="sub">Six-Layer Architecture — Updated with ECL Tracing, Guardrails, Connectors & Studio</div>
+
+        <div class="stack">
+            <!-- Layer 1: Data Sources -->
+            <div class="layer l1">
+                <div class="layer-num">1</div>
+                <div class="layer-name">DATA SOURCES</div>
+                <div class="layer-items">
+                    <div class="layer-item">🗄️ Databases</div>
+                    <div class="layer-item">🔌 APIs</div>
+                    <div class="layer-item">📄 Documents</div>
+                    <div class="layer-item">📡 IoT Sensors</div>
+                    <div class="layer-item">🖼️ Images</div>
+                </div>
+            </div>
+
+            <!-- Layer 2: Ingestion -->
+            <div class="layer l2">
+                <div class="layer-num">2</div>
+                <div class="layer-name">INGESTION</div>
+                <div class="layer-items">
+                    <div class="layer-item">⚙️ ETL Pipelines</div>
+                    <div class="layer-item">🌊 Streaming</div>
+                    <div class="layer-item">📎 SharePoint <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">🏢 Dynamics 365 <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">🎫 ServiceNow <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">👁️ OCR/Vision</div>
+                </div>
+            </div>
+
+            <!-- Layer 3: Extraction (ECL Zone) -->
+            <div class="layer l3">
+                <div class="layer-num">3</div>
+                <div class="layer-name">EXTRACTION</div>
+                <div class="layer-items">
+                    <div class="layer-item">🧠 5 MoE Experts</div>
+                    <div class="layer-item">🏷️ Entity Recognition</div>
+                    <div class="layer-item">✅ Hallucination Guard <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">📊 Confidence Guardrails <span class="new-badge">NEW</span></div>
+                </div>
+            </div>
+
+            <!-- Layer 4: Knowledge -->
+            <div class="layer l4">
+                <div class="layer-num">4</div>
+                <div class="layer-name">KNOWLEDGE</div>
+                <div class="layer-items">
+                    <div class="layer-item">🕸️ FalkorDB Graph</div>
+                    <div class="layer-item">📋 Agent Tracing <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">📜 Governance <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">🏷️ Model Versioning <span class="new-badge">NEW</span></div>
+                </div>
+            </div>
+
+            <!-- Layer 5: Orchestration -->
+            <div class="layer l5">
+                <div class="layer-num">5</div>
+                <div class="layer-name">ORCHESTRATION</div>
+                <div class="layer-items">
+                    <div class="layer-item">🔧 6 MCP Tools</div>
+                    <div class="layer-item">🤖 Agent APIs</div>
+                    <div class="layer-item">🔍 Query Engine</div>
+                    <div class="layer-item">📋 Pipeline Tracing <span class="new-badge">NEW</span></div>
+                </div>
+            </div>
+
+            <!-- Layer 6: Consumption -->
+            <div class="layer l6">
+                <div class="layer-num">6</div>
+                <div class="layer-name">CONSUMPTION</div>
+                <div class="layer-items">
+                    <div class="layer-item">🧪 ECL Studio <span class="new-badge">NEW</span></div>
+                    <div class="layer-item">🤖 AI Agents</div>
+                    <div class="layer-item">💬 Copilots</div>
+                    <div class="layer-item">📊 Dashboards</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ETL vs ECL Comparison</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #0a0e1a 0%, #111827 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 60px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .sub {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 36px;
+        }
+
+        .versus {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .col {
+            flex: 1;
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .col.etl {
+            background: rgba(239, 68, 68, 0.06);
+            border: 2px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .col.ecl {
+            background: rgba(52, 211, 153, 0.08);
+            border: 2px solid rgba(52, 211, 153, 0.35);
+            box-shadow: 0 0 40px rgba(52, 211, 153, 0.08);
+        }
+
+        .col-header {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 4px;
+        }
+
+        .etl .col-header {
+            color: #f87171;
+        }
+
+        .ecl .col-header {
+            color: #6ee7b7;
+        }
+
+        .col-sub {
+            font-size: 13px;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        .etl .col-sub {
+            color: #fca5a5;
+        }
+
+        .ecl .col-sub {
+            color: #a7f3d0;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 15px;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .row .icon {
+            font-size: 18px;
+            width: 28px;
+            text-align: center;
+        }
+
+        .etl .row {
+            color: #94a3b8;
+        }
+
+        .ecl .row {
+            color: #e2e8f0;
+        }
+
+        .badge {
+            margin-left: auto;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge.legacy {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+
+        .badge.new {
+            background: rgba(52, 211, 153, 0.15);
+            color: #6ee7b7;
+        }
+
+        .divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .divider .vs {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 900;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide">
+        <h1>ETL <span style="color:#475569">vs</span> ECL</h1>
+        <div class="sub">Legacy Pipeline vs Context Architecture</div>
+
+        <div class="versus">
+            <!-- ETL -->
+            <div class="col etl">
+                <div class="col-header">ETL</div>
+                <div class="col-sub">FOR HUMANS</div>
+                <div class="row"><span class="icon">📊</span> Facts & Metrics <span class="badge legacy">tabular</span>
+                </div>
+                <div class="row"><span class="icon">📦</span> Aggregates</div>
+                <div class="row"><span class="icon">📁</span> 20% Structured Data</div>
+                <div class="row"><span class="icon">📈</span> BI Dashboards</div>
+                <div class="row"><span class="icon">🚫</span> No audit trail <span class="badge legacy">gap</span></div>
+                <div class="row"><span class="icon">❓</span> No confidence scores</div>
+                <div class="row"><span class="icon">🔒</span> No hallucination controls</div>
+            </div>
+
+            <div class="divider">
+                <div class="vs">VS</div>
+            </div>
+
+            <!-- ECL -->
+            <div class="col ecl">
+                <div class="col-header">ECL</div>
+                <div class="col-sub">FOR AI AGENTS</div>
+                <div class="row"><span class="icon">🏷️</span> Entities & Relationships <span
+                        class="badge new">graph</span></div>
+                <div class="row"><span class="icon">🧠</span> Multi-hop Reasoning</div>
+                <div class="row"><span class="icon">📄</span> 80% Unstructured Data</div>
+                <div class="row"><span class="icon">🤖</span> MCP Tools + AI Agents</div>
+                <div class="row"><span class="icon">📋</span> Full Pipeline Tracing <span class="badge new">new</span>
+                </div>
+                <div class="row"><span class="icon">📊</span> Confidence Guardrails <span class="badge new">new</span>
+                </div>
+                <div class="row"><span class="icon">✅</span> Hallucination Controls <span class="badge new">new</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
