@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECL Architecture – Why We Win on Quality AND Price</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a18;
+            color: #fff;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #12122a;
+            border-radius: 20px;
+            padding: 44px 56px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === HERO BANNER === */
+        .hero-banner {
+            background: linear-gradient(135deg, #001a33 0%, #003366 40%, #1a0044 100%);
+            border: 2px solid rgba(0, 212, 255, 0.25);
+            border-radius: 16px;
+            padding: 28px 36px;
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .hero-banner h1 {
+            font-size: 30px;
+            font-weight: 900;
+            line-height: 1.15;
+        }
+
+        .hero-banner h1 .gradient {
+            background: linear-gradient(135deg, #00d4ff, #7b61ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 14px;
+            color: #8899bb;
+            margin-top: 6px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px 22px;
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .stat-card .number.green {
+            color: #00e676;
+        }
+
+        .stat-card .number.red {
+            color: #ff5555;
+        }
+
+        .stat-card .number.blue {
+            color: #00d4ff;
+        }
+
+        .stat-card .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667799;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* === QUALITY STRIP === */
+        .quality-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .quality-card {
+            background: rgba(0, 212, 130, 0.06);
+            border: 1px solid rgba(0, 212, 130, 0.15);
+            border-radius: 12px;
+            padding: 16px 18px;
+            text-align: center;
+        }
+
+        .quality-card .q-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .quality-card .q-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00d482;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quality-card .q-ecl {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 4px;
+        }
+
+        .quality-card .q-lyzr {
+            font-size: 11px;
+            color: #ff8888;
+            margin-top: 2px;
+        }
+
+        /* === ARCHITECTURE COLUMNS === */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 48px 1fr;
+            gap: 0;
+            margin-bottom: 28px;
+        }
+
+        .arch-col {
+            border-radius: 16px;
+            padding: 26px;
+            position: relative;
+        }
+
+        .arch-col.ecl {
+            background: linear-gradient(160deg, #0d1f3c, #162545);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.06);
+        }
+
+        .arch-col.lyzr {
+            background: #1a1a30;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            opacity: 0.7;
+        }
+
+        .vs-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            color: #ff6b9d;
+            text-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
+        }
+
+        .col-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .col-title.ecl-title {
+            background: linear-gradient(90deg, #00d4ff, #7b61ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .col-title.lyzr-title {
+            color: #7755aa;
+        }
+
+        /* Layers */
+        .layer {
+            margin-bottom: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .layer-header {
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .layer-body {
+            padding: 10px 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chip {
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ECL layer colors */
+        .ecl .layer-header.l1 {
+            background: linear-gradient(90deg, #004488, #0066cc);
+        }
+
+        .ecl .layer-body.l1 {
+            background: rgba(0, 68, 136, 0.2);
+        }
+
+        .ecl .chip.l1 {
+            background: rgba(0, 140, 255, 0.15);
+            color: #66bbff;
+            border: 1px solid rgba(0, 140, 255, 0.25);
+        }
+
+        .ecl .layer-header.l2 {
+            background: linear-gradient(90deg, #006644, #009944);
+        }
+
+        .ecl .layer-body.l2 {
+            background: rgba(0, 100, 68, 0.2);
+        }
+
+        .ecl .chip.l2 {
+            background: rgba(0, 200, 100, 0.15);
+            color: #44dd88;
+            border: 1px solid rgba(0, 200, 100, 0.25);
+        }
+
+        .ecl .layer-header.l3 {
+            background: linear-gradient(90deg, #6b33aa, #8855cc);
+        }
+
+        .ecl .layer-body.l3 {
+            background: rgba(107, 51, 170, 0.2);
+        }
+
+        .ecl .chip.l3 {
+            background: rgba(136, 85, 204, 0.15);
+            color: #bb88ff;
+            border: 1px solid rgba(136, 85, 204, 0.25);
+        }
+
+        .ecl .layer-header.l4 {
+            background: linear-gradient(90deg, #aa4400, #cc6600);
+        }
+
+        .ecl .layer-body.l4 {
+            background: rgba(170, 68, 0, 0.2);
+        }
+
+        .ecl .chip.l4 {
+            background: rgba(204, 102, 0, 0.15);
+            color: #ffaa55;
+            border: 1px solid rgba(204, 102, 0, 0.25);
+        }
+
+        .ecl .layer-header.l5 {
+            background: linear-gradient(90deg, #3a3a55, #555577);
+        }
+
+        .ecl .layer-body.l5 {
+            background: rgba(58, 58, 85, 0.2);
+        }
+
+        .ecl .chip.l5 {
+            background: rgba(100, 100, 140, 0.15);
+            color: #aaaacc;
+            border: 1px solid rgba(100, 100, 140, 0.25);
+        }
+
+        /* Lyzr layer colors */
+        .lyzr .layer-header {
+            background: linear-gradient(90deg, #3a2870, #5533aa);
+        }
+
+        .lyzr .layer-body {
+            background: rgba(58, 40, 112, 0.12);
+        }
+
+        .lyzr .chip {
+            background: rgba(100, 70, 170, 0.15);
+            color: #9977cc;
+            border: 1px solid rgba(100, 70, 170, 0.15);
+            font-size: 10px;
+        }
+
+        .lyzr .layer-header.int {
+            background: linear-gradient(90deg, #155560, #1e7788);
+        }
+
+        .lyzr .layer-body.int {
+            background: rgba(21, 85, 96, 0.12);
+        }
+
+        .lyzr .chip.int {
+            background: rgba(30, 119, 136, 0.15);
+            color: #44aabb;
+            border: 1px solid rgba(30, 119, 136, 0.15);
+        }
+
+        .highlight-chip {
+            background: rgba(0, 212, 130, 0.2) !important;
+            color: #00e676 !important;
+            border: 1px solid rgba(0, 212, 130, 0.4) !important;
+            font-weight: 700 !important;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            padding: 4px 0;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 14px;
+        }
+
+        .advantage {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            margin-top: 8px;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .advantage.win {
+            background: rgba(0, 212, 130, 0.06);
+            border: 1px solid rgba(0, 212, 130, 0.18);
+            color: #77ddaa;
+        }
+
+        .advantage.lose {
+            background: rgba(255, 80, 80, 0.06);
+            border: 1px solid rgba(255, 80, 80, 0.15);
+            color: #ffaa88;
+        }
+
+        .advantage .icon {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* === COMPARISON TABLE === */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 24px;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(90deg, #1e1e40, #2a2a50);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 10px;
+            border-bottom: 2px solid rgba(123, 97, 255, 0.3);
+        }
+
+        .comparison-table th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        .comparison-table th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        .comparison-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: top;
+        }
+
+        .comparison-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: #8899bb;
+        }
+
+        .comparison-table .win {
+            color: #00e676;
+            font-weight: 700;
+        }
+
+        .comparison-table .lose {
+            color: #ff6666;
+        }
+
+        .comparison-table .ecl-col {
+            color: #44ccff;
+        }
+
+        .comparison-table .lyzr-col {
+            color: #9977cc;
+        }
+
+        .comparison-table .verdict {
+            font-weight: 800;
+        }
+
+        /* === PRICE KILLER === */
+        .price-killer {
+            background: linear-gradient(135deg, #001a00, #003300, #001a00);
+            border: 2px solid rgba(0, 230, 118, 0.3);
+            border-radius: 14px;
+            padding: 24px 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .price-item {}
+
+        .price-item .p-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #558866;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .price-item .p-value {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .price-item .p-detail {
+            font-size: 10px;
+            color: #558866;
+            margin-top: 2px;
+        }
+
+        .price-item .p-value.ecl-price {
+            color: #00e676;
+        }
+
+        .price-item .p-value.lyzr-price {
+            color: #ff5555;
+            text-decoration: line-through;
+        }
+
+        .price-item .p-value.savings {
+            color: #00d4ff;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 10px;
+            color: #334455;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 20px;
+            }
+
+            .page {
+                box-shadow: none;
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- === HERO === -->
+        <div class="hero-banner">
+            <div>
+                <h1><span class="gradient">ECL beats Lyzr</span><br>on Quality AND Price</h1>
+                <div class="hero-tagline">Entity-Context-Linking · Accion Labs · Field CTO Architecture</div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="number green">$0</div>
+                    <div class="label">ECL LLM Cost</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number red">$380K</div>
+                    <div class="label">Lyzr Annual</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number blue">5</div>
+                    <div class="label">Domain Experts</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === QUALITY STRIP === -->
+        <div class="quality-strip">
+            <div class="quality-card">
+                <div class="q-icon">🎯</div>
+                <div class="q-title">Extraction Quality</div>
+                <div class="q-ecl">ECL: 5 Domain Experts (MoE)</div>
+                <div class="q-lyzr">Lyzr: Generic RAG agents</div>
+            </div>
+            <div class="quality-card">
+                <div class="q-icon">🧠</div>
+                <div class="q-title">Knowledge Model</div>
+                <div class="q-ecl">ECL: Knowledge Graph (typed)</div>
+                <div class="q-lyzr">Lyzr: Vector embeddings (flat)</div>
+            </div>
+            <div class="quality-card">
+                <div class="q-icon">🔍</div>
+                <div class="q-title">Explainability</div>
+                <div class="q-ecl">ECL: Full graph lineage</div>
+                <div class="q-lyzr">Lyzr: Agent trace logs</div>
+            </div>
+            <div class="quality-card">
+                <div class="q-icon">🛡️</div>
+                <div class="q-title">Data Security</div>
+                <div class="q-ecl">ECL: 100% local (zero exfil)</div>
+                <div class="q-lyzr">Lyzr: Cloud SaaS (in VPC)</div>
+            </div>
+        </div>
+
+        <!-- === ARCHITECTURE SIDE-BY-SIDE === -->
+        <div class="comparison">
+
+            <!-- ECL Column -->
+            <div class="arch-col ecl">
+                <div class="col-title ecl-title">⚡ ECL Architecture (Local · $0)</div>
+
+                <div class="layer">
+                    <div class="layer-header l1">🧠 MoE Extraction Engine</div>
+                    <div class="layer-body l1">
+                        <span class="chip l1">ContractExpert</span>
+                        <span class="chip l1">EquipmentExpert</span>
+                        <span class="chip l1">FinancialRiskExpert</span>
+                        <span class="chip l1">OpportunityExpert</span>
+                        <span class="chip l1">HealthcareExpert</span>
+                        <span class="chip highlight-chip">Agent Tracing</span>
+                        <span class="chip highlight-chip">Guardrails</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header l2">📊 Knowledge Graph (FalkorDB)</div>
+                    <div class="layer-body l2">
+                        <span class="chip l2">Entity-Context-Links</span>
+                        <span class="chip l2">Typed Relationships</span>
+                        <span class="chip l2">Cypher Queries</span>
+                        <span class="chip highlight-chip">Explainable AI</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header l3">🤖 Local LLM (Ollama)</div>
+                    <div class="layer-body l3">
+                        <span class="chip l3">LLaMA 3 · Mistral · Any</span>
+                        <span class="chip l3">Model Neutral</span>
+                        <span class="chip highlight-chip">$0 Per Query</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header l4">🔌 MCP Agent Interface</div>
+                    <div class="layer-body l4">
+                        <span class="chip l4">get_tower_context</span>
+                        <span class="chip l4">find_opportunities</span>
+                        <span class="chip l4">assess_risk</span>
+                        <span class="chip l4">search_entities</span>
+                        <span class="chip l4">run_cypher</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header l5">📁 Document Sources</div>
+                    <div class="layer-body l5">
+                        <span class="chip l5">Contracts</span>
+                        <span class="chip l5">Drone Reports</span>
+                        <span class="chip l5">Clinical Notes</span>
+                        <span class="chip l5">Any Unstructured Text</span>
+                    </div>
+                </div>
+
+                <div class="advantage win">
+                    <span class="icon">✅</span>
+                    <span><strong>Data NEVER leaves your infrastructure.</strong> No API keys. No vendor lock-in. Swap
+                        models in seconds.</span>
+                </div>
+            </div>
+
+            <!-- VS -->
+            <div class="vs-divider">VS</div>
+
+            <!-- Lyzr Column -->
+            <div class="arch-col lyzr">
+                <div class="col-title lyzr-title">Lyzr Architecture (Cloud · $380K/yr)</div>
+
+                <div class="layer">
+                    <div class="layer-header">☁️ Lyzr Agentic Platform (SaaS)</div>
+                    <div class="layer-body">
+                        <span class="chip">RAG</span>
+                        <span class="chip">Integrations</span>
+                        <span class="chip">MCP</span>
+                        <span class="chip">A2A</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header">💾 Lyzr Data Layer</div>
+                    <div class="layer-body">
+                        <span class="chip">S3/Vector</span>
+                        <span class="chip">Elastic Cache</span>
+                        <span class="chip">Graph DB</span>
+                        <span class="chip">Vector DB</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header int">🔗 CCI Integration Layer</div>
+                    <div class="layer-body int">
+                        <span class="chip int">RAG*</span>
+                        <span class="chip int">MCP</span>
+                        <span class="chip int">Services</span>
+                        <span class="chip int">SaaS Connectors</span>
+                        <span class="chip int">DB Connectors</span>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+
+                <div class="layer">
+                    <div class="layer-header">📁 CCI System of Records</div>
+                    <div class="layer-body">
+                        <span class="chip">AppXtender</span>
+                        <span class="chip">Dynamics 365</span>
+                        <span class="chip">ServiceNow</span>
+                        <span class="chip">SharePoint</span>
+                        <span class="chip">SiteTracker</span>
+                        <span class="chip">Esri</span>
+                        <span class="chip">Snowflake</span>
+                        <span class="chip">Oracle</span>
+                        <span class="chip">PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="advantage lose">
+                    <span class="icon">⚠️</span>
+                    <span><strong>$380K/yr + $100K infra + API key costs.</strong> Data transits to cloud. Model vendor
+                        lock-in. Weeks to deploy.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- === PRICE KILLER BANNER === -->
+        <div class="price-killer">
+            <div class="price-item">
+                <div class="p-label">Lyzr Annual Cost</div>
+                <div class="p-value lyzr-price">$380,000</div>
+                <div class="p-detail">+ $100K infra + API key usage</div>
+            </div>
+            <div class="price-item">
+                <div class="p-label">ECL Annual Cost</div>
+                <div class="p-value ecl-price">$0</div>
+                <div class="p-detail">Ollama local + FalkorDB OSS</div>
+            </div>
+            <div class="price-item">
+                <div class="p-label">Your Savings (Year 1)</div>
+                <div class="p-value savings">$480K+</div>
+                <div class="p-detail">Reinvest into custom solutions</div>
+            </div>
+        </div>
+
+        <!-- === COMPARISON TABLE === -->
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>ECL (Accion Labs)</th>
+                    <th>Lyzr AI</th>
+                    <th>Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Extraction Approach</td>
+                    <td class="ecl-col">5 domain-specific MoE experts with typed output</td>
+                    <td class="lyzr-col">Generic RAG-based agentic extraction</td>
+                    <td class="verdict win">ECL ✓ Quality</td>
+                </tr>
+                <tr>
+                    <td>Knowledge Representation</td>
+                    <td class="ecl-col">Knowledge Graph — entities, relationships, typed edges</td>
+                    <td class="lyzr-col">Vector DB + flat embeddings</td>
+                    <td class="verdict win">ECL ✓ Quality</td>
+                </tr>
+                <tr>
+                    <td>Explainability</td>
+                    <td class="ecl-col">Every entity traceable to source expert + graph lineage</td>
+                    <td class="lyzr-col">Agent trace logs</td>
+                    <td class="verdict win">ECL ✓ Quality</td>
+                </tr>
+                <tr>
+                    <td>Hallucination Control</td>
+                    <td class="ecl-col">Confidence guardrails + entity validation vs source</td>
+                    <td class="lyzr-col">Standard error controls</td>
+                    <td class="verdict win">ECL ✓ Quality</td>
+                </tr>
+                <tr>
+                    <td>Model Neutrality</td>
+                    <td class="ecl-col">Any model via Ollama (LLaMA, Mistral, Phi, etc.)</td>
+                    <td class="lyzr-col">Bedrock/Private LLM</td>
+                    <td class="verdict win">ECL ✓ Flexibility</td>
+                </tr>
+                <tr>
+                    <td>Annual Cost</td>
+                    <td class="ecl-col">$0 (OSS + local LLM)</td>
+                    <td class="lyzr-col lose">$380K sub + $100K infra + keys</td>
+                    <td class="verdict win">ECL ✓ Price</td>
+                </tr>
+                <tr>
+                    <td>Data Residency</td>
+                    <td class="ecl-col">100% on-prem, zero exfiltration</td>
+                    <td class="lyzr-col">Cloud SaaS (AWS VPC)</td>
+                    <td class="verdict win">ECL ✓ Security</td>
+                </tr>
+                <tr>
+                    <td>Time to Value</td>
+                    <td class="ecl-col">Minutes — pip install + run</td>
+                    <td class="lyzr-col">Weeks — procurement + setup + $30K onboarding</td>
+                    <td class="verdict win">ECL ✓ Speed</td>
+                </tr>
+                <tr>
+                    <td>Vendor Lock-in</td>
+                    <td class="ecl-col">None — swap any component</td>
+                    <td class="lyzr-col">Annual contract, proprietary platform</td>
+                    <td class="verdict win">ECL ✓ Freedom</td>
+                </tr>
+                <tr>
+                    <td>Enterprise SoR Connectors</td>
+                    <td class="ecl-col">Custom connectors (build needed)</td>
+                    <td class="lyzr-col">10+ pre-built connectors</td>
+                    <td class="verdict" style="color:#9977cc;">Lyzr (today)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div><strong style="color:#667799;">ACCION LABS</strong> · Field CTO Architecture · Summit 2026</div>
+            <div><em>ECL wins 9 of 10 criteria · Proprietary & Confidential</em></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

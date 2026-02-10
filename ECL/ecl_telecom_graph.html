@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html><head><title>ECL Context Graph</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>body{background:#1a1a2e;margin:0} svg{width:100%;height:100vh}</style>
+</head><body>
+<script>
+const nodes = [{"id": "tower_t789", "label": "Tower T-789", "group": "Tower"}, {"id": "contract_SUMMARY", "label": "Contract #SUMMARY", "group": "Contract"}, {"id": "company_verizon", "label": "Verizon", "group": "Company"}, {"id": "contract_67890", "label": "Contract #67890", "group": "Contract"}, {"id": "company_dish", "label": "DISH", "group": "Company"}, {"id": "equipment_6_antennas_0", "label": "6 antennas", "group": "Equipment"}, {"id": "equipment_1_satellite_dish_1", "label": "1 Satellite Dish", "group": "Equipment"}, {"id": "equipment_dish_from_dish_network_shows_corrosion_2", "label": "dish from DISH Network shows corrosion", "group": "Equipment"}, {"id": "equipment_must_be_removed_per_defaulted_contract_terms_3", "label": "must be removed per defaulted contract terms", "group": "Equipment"}, {"id": "risk_payment_default_0", "label": "Payment Default Risk #1", "group": "Risk"}, {"id": "risk_payment_default_1", "label": "Payment Default Risk #2", "group": "Risk"}, {"id": "risk_payment_default_2", "label": "Payment Default Risk #3", "group": "Risk"}, {"id": "risk_payment_default_3", "label": "Payment Default Risk #4", "group": "Risk"}, {"id": "risk_payment_default_4", "label": "Payment Default Risk #5", "group": "Risk"}, {"id": "financial_exposure_summary", "label": "Revenue Exposure Summary", "group": "Financial"}, {"id": "opportunity_removal_0", "label": "Equipment Removal #1", "group": "Opportunity"}, {"id": "opportunity_maintenance_0", "label": "Maintenance Required #1", "group": "Opportunity"}, {"id": "opportunity_maintenance_1", "label": "Maintenance Required #2", "group": "Opportunity"}];
+const links = [{"source": "company_verizon", "target": "contract_SUMMARY", "label": "HAS_CONTRACT"}, {"source": "company_dish", "target": "contract_67890", "label": "HAS_CONTRACT"}, {"source": "tower_t789", "target": "contract_SUMMARY", "label": "HAS_CONTRACT"}, {"source": "contract_SUMMARY", "target": "company_verizon", "label": "WITH_CLIENT"}, {"source": "tower_t789", "target": "contract_67890", "label": "HAS_CONTRACT"}, {"source": "contract_67890", "target": "company_dish", "label": "WITH_CLIENT"}, {"source": "tower_t789", "target": "equipment_6_antennas_0", "label": "HAS_EQUIPMENT"}, {"source": "tower_t789", "target": "equipment_1_satellite_dish_1", "label": "HAS_EQUIPMENT"}, {"source": "tower_t789", "target": "equipment_dish_from_dish_network_shows_corrosion_2", "label": "HAS_EQUIPMENT"}, {"source": "tower_t789", "target": "equipment_must_be_removed_per_defaulted_contract_terms_3", "label": "HAS_EQUIPMENT"}, {"source": "tower_t789", "target": "risk_payment_default_0", "label": "HAS_RISK"}, {"source": "tower_t789", "target": "risk_payment_default_1", "label": "HAS_RISK"}, {"source": "tower_t789", "target": "risk_payment_default_2", "label": "HAS_RISK"}, {"source": "tower_t789", "target": "risk_payment_default_3", "label": "HAS_RISK"}, {"source": "tower_t789", "target": "risk_payment_default_4", "label": "HAS_RISK"}, {"source": "tower_t789", "target": "opportunity_removal_0", "label": "HAS_OPPORTUNITY"}, {"source": "tower_t789", "target": "opportunity_maintenance_0", "label": "HAS_OPPORTUNITY"}, {"source": "tower_t789", "target": "opportunity_maintenance_1", "label": "HAS_OPPORTUNITY"}];
+// D3 force-directed graph implementation
+const svg = d3.select("body").append("svg");
+const sim = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d=>d.id).distance(150))
+  .force("charge", d3.forceManyBody().strength(-300))
+  .force("center", d3.forceCenter(window.innerWidth/2, window.innerHeight/2));
+const link = svg.selectAll("line").data(links).join("line").attr("stroke","#666");
+const node = svg.selectAll("circle").data(nodes).join("circle").attr("r",12).attr("fill","#4ECDC4");
+const label = svg.selectAll("text").data(nodes).join("text").text(d=>d.label)
+  .attr("fill","white").attr("font-size","10px");
+sim.on("tick",()=>{
+  link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y).attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+  node.attr("cx",d=>d.x).attr("cy",d=>d.y);
+  label.attr("x",d=>d.x+15).attr("y",d=>d.y+4);
+});
+</script></body></html>

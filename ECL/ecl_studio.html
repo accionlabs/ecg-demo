@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECL Studio — Low-Code Builder</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-dark: #0a0e1a;
+            --bg-card: #111827;
+            --bg-input: #1e2640;
+            --border: #2a3352;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.15);
+            --red: #ef4444;
+            --amber: #f59e0b;
+            --cyan: #06b6d4;
+            --purple: #a855f7;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ─── TOP NAV ─── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(17, 24, 39, 0.95);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .topbar .logo .icon {
+            font-size: 24px;
+        }
+
+        .topbar .tag {
+            font-size: 11px;
+            background: var(--accent);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .topbar .status {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .status-dot.green {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+        }
+
+        .status-dot.red {
+            background: var(--red);
+        }
+
+        .status-dot.amber {
+            background: var(--amber);
+        }
+
+        /* ─── LAYOUT ─── */
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 340px;
+            min-height: calc(100vh - 53px);
+        }
+
+        /* ─── LEFT SIDEBAR ─── */
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+
+        .sidebar h3:first-child {
+            margin-top: 0;
+        }
+
+        .expert-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .expert-card:hover {
+            border-color: var(--accent);
+        }
+
+        .expert-card.active {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .expert-card .icon {
+            font-size: 20px;
+        }
+
+        .expert-card .info {
+            flex: 1;
+        }
+
+        .expert-card .name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .expert-card .domain {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .expert-card .toggle {
+            width: 36px;
+            height: 20px;
+            background: var(--border);
+            border-radius: 10px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .expert-card.active .toggle {
+            background: var(--accent);
+        }
+
+        .expert-card .toggle::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+
+        .expert-card.active .toggle::after {
+            left: 18px;
+        }
+
+        /* Config section */
+        .config-group {
+            margin-bottom: 16px;
+        }
+
+        .config-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-dim);
+        }
+
+        .config-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+
+        .config-group .value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .config-group select {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        /* connectors list */
+        .connector-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 12px;
+        }
+
+        .connector-item .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .connector-item .dot.connected {
+            background: var(--green);
+        }
+
+        .connector-item .dot.disconnected {
+            background: var(--border);
+        }
+
+        /* ─── MAIN PANEL ─── */
+        .main {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+        }
+
+        .input-section {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .input-section h2 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-section textarea {
+            width: 100%;
+            height: 220px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            color: var(--text);
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        .input-section textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .input-section textarea::placeholder {
+            color: var(--text-dim);
+        }
+
+        .action-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-left: auto;
+        }
+
+        /* ─── RESULTS ─── */
+        .results-section {
+            flex: 1;
+            padding: 20px 24px;
+            overflow-y: auto;
+        }
+
+        .results-section h2 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card .num {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Entity table */
+        .entity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .entity-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .entity-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(42, 51, 82, 0.5);
+        }
+
+        .entity-table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-contract {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+
+        .badge-equipment {
+            background: rgba(6, 182, 212, 0.2);
+            color: #22d3ee;
+        }
+
+        .badge-risk {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .badge-opportunity {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .badge-financial {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .badge-company {
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+        }
+
+        .badge-person {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+        }
+
+        .confidence-bar {
+            width: 60px;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .confidence-bar .fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .fill-high {
+            background: var(--green);
+        }
+
+        .fill-med {
+            background: var(--amber);
+        }
+
+        .fill-low {
+            background: var(--red);
+        }
+
+        /* ─── RIGHT SIDEBAR (Trace) ─── */
+        .trace-panel {
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .trace-panel h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+
+        .trace-panel h3:first-child {
+            margin-top: 0;
+        }
+
+        .trace-entry {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+
+        .trace-entry .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .trace-entry .expert-name {
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .trace-entry .time {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .trace-entry .details {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .graph-preview {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .graph-preview canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulse animation for live dot */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .layout {
+                grid-template-columns: 240px 1fr;
+            }
+
+            .trace-panel {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ═══ TOP BAR ═══ -->
+    <div class="topbar">
+        <div class="logo">
+            <span class="icon">🧪</span>
+            <span>ECL Studio</span>
+            <span class="tag">LOW-CODE</span>
+        </div>
+        <div class="status">
+            <span><span class="status-dot green pulse" id="serverDot"></span> Server</span>
+            <span><span class="status-dot" id="ollamaDot"></span> <span id="ollamaLabel">Checking...</span></span>
+            <span>Confidence: <strong id="confDisplay">0.70</strong></span>
+        </div>
+    </div>
+
+    <!-- ═══ MAIN LAYOUT ═══ -->
+    <div class="layout">
+
+        <!-- ═══ LEFT SIDEBAR ═══ -->
+        <div class="sidebar">
+            <h3>🤖 Extraction Experts</h3>
+            <div id="expertList">
+                <div class="expert-card active" data-expert="ContractExpert" onclick="toggleExpert(this)">
+                    <span class="icon">📄</span>
+                    <div class="info">
+                        <div class="name">Contract Expert</div>
+                        <div class="domain">Contracts & Agreements</div>
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+                <div class="expert-card active" data-expert="EquipmentExpert" onclick="toggleExpert(this)">
+                    <span class="icon">⚙️</span>
+                    <div class="info">
+                        <div class="name">Equipment Expert</div>
+                        <div class="domain">Equipment & Assets</div>
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+                <div class="expert-card active" data-expert="FinancialRiskExpert" onclick="toggleExpert(this)">
+                    <span class="icon">💰</span>
+                    <div class="info">
+                        <div class="name">Financial Risk Expert</div>
+                        <div class="domain">Revenue & Defaults</div>
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+                <div class="expert-card active" data-expert="OpportunityExpert" onclick="toggleExpert(this)">
+                    <span class="icon">🎯</span>
+                    <div class="info">
+                        <div class="name">Opportunity Expert</div>
+                        <div class="domain">Upsell & Growth</div>
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+                <div class="expert-card" data-expert="HealthcareExpert" onclick="toggleExpert(this)">
+                    <span class="icon">🏥</span>
+                    <div class="info">
+                        <div class="name">Healthcare Expert</div>
+                        <div class="domain">Medical Records</div>
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+            </div>
+
+            <h3>⚙️ Configuration</h3>
+            <div class="config-group">
+                <label>Confidence Threshold: <span class="value" id="confValue">0.70</span></label>
+                <input type="range" min="0" max="100" value="70" id="confSlider"
+                    oninput="document.getElementById('confValue').textContent = (this.value/100).toFixed(2); document.getElementById('confDisplay').textContent = (this.value/100).toFixed(2);">
+            </div>
+            <div class="config-group">
+                <label>Extraction Mode</label>
+                <select id="modeSelect">
+                    <option value="regex">Regex Experts (Fast)</option>
+                    <option value="llm">LLM + Regex (Accurate)</option>
+                </select>
+            </div>
+            <div class="config-group">
+                <label>LLM Model</label>
+                <select id="modelSelect">
+                    <option value="llama3:8b">Llama 3 8B (Local)</option>
+                    <option value="mistral:7b">Mistral 7B (Local)</option>
+                    <option value="gemma2:9b">Gemma 2 9B (Local)</option>
+                </select>
+            </div>
+
+            <h3>🔌 Connectors</h3>
+            <div id="connectorList">
+                <div class="connector-item"><span class="dot connected"></span> FileSystem (Local)</div>
+                <div class="connector-item"><span class="dot disconnected"></span> SharePoint</div>
+                <div class="connector-item"><span class="dot disconnected"></span> Dynamics 365</div>
+                <div class="connector-item"><span class="dot disconnected"></span> ServiceNow</div>
+            </div>
+        </div>
+
+        <!-- ═══ MAIN PANEL ═══ -->
+        <div class="main">
+            <div class="input-section">
+                <h2>📝 Document Input</h2>
+                <textarea id="docInput" placeholder="Paste your document text here...
+
+Example: Tower inspection reports, contracts, medical records, financial documents.
+
+Or click 'Load Sample' to try a pre-loaded telecom tower report."></textarea>
+                <div class="action-bar">
+                    <button class="btn btn-primary" id="extractBtn" onclick="runExtraction()">
+                        <span>⚡</span> Extract Entities
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadSample()">📂 Load Sample</button>
+                    <button class="btn btn-secondary" onclick="clearAll()">🗑️ Clear</button>
+                    <span class="char-count"><span id="charCount">0</span> characters</span>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <div class="empty-state" id="emptyState">
+                    <div class="icon">🔍</div>
+                    <h3>Ready to Extract</h3>
+                    <p>Paste a document or load a sample to begin entity extraction.<br>Configure experts and thresholds
+                        in the sidebar.</p>
+                </div>
+                <div id="resultsContent" style="display:none;">
+                    <div class="stats-row" id="statsRow"></div>
+                    <h2>Extracted Entities</h2>
+                    <table class="entity-table">
+                        <thead>
+                            <tr>
+                                <th>Entity</th>
+                                <th>Type</th>
+                                <th>Confidence</th>
+                                <th>Expert</th>
+                                <th>Properties</th>
+                            </tr>
+                        </thead>
+                        <tbody id="entityTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ RIGHT SIDEBAR (Trace) ═══ -->
+        <div class="trace-panel">
+            <h3>📋 Pipeline Trace</h3>
+            <div id="traceContent">
+                <div class="trace-entry">
+                    <div class="header">
+                        <span class="expert-name">Waiting...</span>
+                    </div>
+                    <div class="details">
+                        <span>Run an extraction to see the trace</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🕸️ Graph Preview</h3>
+            <div class="graph-preview">
+                <canvas id="graphCanvas"></canvas>
+            </div>
+
+            <h3>📊 Expert Breakdown</h3>
+            <div id="expertBreakdown">
+                <div style="color: var(--text-dim); font-size: 12px;">
+                    No data yet. Run an extraction.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─── STATE ───
+        let lastResult = null;
+        const API_BASE = window.location.origin;
+
+        // ─── INIT ───
+        document.getElementById('docInput').addEventListener('input', function () {
+            document.getElementById('charCount').textContent = this.value.length.toLocaleString();
+        });
+
+        // Check health
+        checkHealth();
+
+        function checkHealth() {
+            fetch(API_BASE + '/api/health')
+                .then(r => r.json())
+                .then(data => {
+                    const dot = document.getElementById('ollamaDot');
+                    const label = document.getElementById('ollamaLabel');
+                    if (data.ollama_available) {
+                        dot.className = 'status-dot green';
+                        label.textContent = 'Ollama ✓';
+                    } else {
+                        dot.className = 'status-dot amber';
+                        label.textContent = 'Regex Only';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('ollamaDot').className = 'status-dot red';
+                    document.getElementById('ollamaLabel').textContent = 'Offline';
+                });
+        }
+
+        // ─── EXPERT TOGGLES ───
+        function toggleExpert(el) {
+            el.classList.toggle('active');
+        }
+
+        function getActiveExperts() {
+            return Array.from(document.querySelectorAll('.expert-card.active'))
+                .map(el => el.dataset.expert);
+        }
+
+        // ─── LOAD SAMPLE ───
+        function loadSample() {
+            const sample = `TOWER SITE INSPECTION REPORT
+Tower ID: T-789 | Location: 40.6892° N, 74.0445° W | Type: Monopole | Height: 150ft
+
+=== SECTION A: TENANT CONTRACTS ===
+
+Contract #1001 - Company: Verizon Wireless
+  Status: Active | Occupancy: 45% | Monthly Revenue: $5,000
+  Lease Term: 2020-2030 | Auto-Renew: Yes
+  Payment Status: Current | Outstanding: $0
+
+Contract #1002 - Company: DISH Network
+  Status: Defaulted | Occupancy: 30% | Monthly Revenue: $3,000
+  Lease Term: 2019-2029 | Auto-Renew: No
+  Payment Status: 90 days overdue | Outstanding: $36,000
+  NOTE: Legal review pending for contract termination
+
+=== SECTION B: EQUIPMENT INVENTORY ===
+
+Equipment: Verizon 5G Panel Antenna
+  Manufacturer: Ericsson | Model: AIR 6449 | Install Date: 2023-03-15
+  Condition: Good | Last Inspection: 2024-12-01 | Next Service: 2025-06-01
+
+Equipment: DISH Legacy Panel
+  Manufacturer: Nokia | Model: AEHC | Install Date: 2019-06-20
+  Condition: Poor - Corrosion Detected | Drone Flag: YES
+  NOTE: Recommend removal per default clause
+
+Equipment: Tower Lighting System
+  Manufacturer: Dialight | Model: D860 | Install Date: 2021-01-10
+  Condition: Fair | FAA Compliance: Current
+
+=== SECTION C: FINANCIAL SUMMARY ===
+
+Monthly Revenue: $8,000 (Verizon: $5,000 + DISH: $3,000)
+Annual Revenue: $96,000
+Outstanding Receivables: $36,000 (DISH - 90 days)
+Risk Exposure: HIGH - 37.5% revenue at risk from DISH default
+Insurance: Current through 2025-12-31
+
+=== SECTION D: OPPORTUNITIES ===
+
+1. UPSELL: T-Mobile interested in 25% capacity at $4,000/month
+2. EQUIPMENT_REMOVAL: DISH equipment flagged for removal (lease clause 12.4)
+3. MAINTENANCE: Tower lighting upgrade available from Dialight
+4. UPSELL: FirstNet (AT&T) evaluating public safety antenna placement`;
+
+            document.getElementById('docInput').value = sample;
+            document.getElementById('charCount').textContent = sample.length.toLocaleString();
+        }
+
+        // ─── CLEAR ───
+        function clearAll() {
+            document.getElementById('docInput').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('resultsContent').style.display = 'none';
+            lastResult = null;
+        }
+
+        // ─── RUN EXTRACTION ───
+        async function runExtraction() {
+            const text = document.getElementById('docInput').value.trim();
+            if (!text) { alert('Please paste a document or load a sample.'); return; }
+
+            const btn = document.getElementById('extractBtn');
+            const spinner = document.getElementById('spinner');
+            btn.disabled = true;
+            spinner.style.display = 'block';
+
+            const useLlm = document.getElementById('modeSelect').value === 'llm';
+            const confidence = parseInt(document.getElementById('confSlider').value) / 100;
+            const model = document.getElementById('modelSelect').value;
+
+            try {
+                const resp = await fetch(API_BASE + '/api/extract', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        use_llm: useLlm,
+                        confidence_threshold: confidence,
+                        model: model,
+                        experts: getActiveExperts(),
+                    }),
+                });
+                const data = await resp.json();
+                if (data.error) { alert('Error: ' + data.error); return; }
+                lastResult = data;
+                renderResults(data);
+            } catch (e) {
+                alert('Server error. Make sure ecl_server.py is running.\n\n' + e.message);
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        // ─── RENDER RESULTS ───
+        function renderResults(data) {
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('resultsContent').style.display = 'block';
+
+            // Stats
+            const statsHtml = `
+                <div class="stat-card"><div class="num">${data.total_entities}</div><div class="label">Entities</div></div>
+                <div class="stat-card"><div class="num">${data.total_relationships}</div><div class="label">Relationships</div></div>
+                <div class="stat-card"><div class="num">${data.processing_time_ms}ms</div><div class="label">Processing</div></div>
+                <div class="stat-card"><div class="num">${data.model}</div><div class="label">Engine</div></div>
+            `;
+            document.getElementById('statsRow').innerHTML = statsHtml;
+
+            // Entity table
+            const tbody = document.getElementById('entityTableBody');
+            tbody.innerHTML = '';
+            data.entities.forEach(e => {
+                const conf = e.confidence;
+                const barClass = conf >= 0.8 ? 'fill-high' : conf >= 0.6 ? 'fill-med' : 'fill-low';
+                const typeLower = e.type.toLowerCase();
+                const badgeClass = `badge-${typeLower}`;
+
+                const propsStr = Object.entries(e.properties || {})
+                    .filter(([k]) => !k.startsWith('_'))
+                    .slice(0, 3)
+                    .map(([k, v]) => `${k}: ${v}`)
+                    .join(', ');
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${e.name}</strong></td>
+                        <td><span class="badge ${badgeClass}">${e.type}</span></td>
+                        <td>
+                            <span class="confidence-bar"><span class="fill ${barClass}" style="width:${conf * 100}%"></span></span>
+                            ${conf.toFixed(2)}
+                        </td>
+                        <td style="color:var(--text-dim)">${e.source_expert}</td>
+                        <td style="color:var(--text-dim); font-size:11px">${propsStr || '—'}</td>
+                    </tr>
+                `;
+            });
+
+            // Trace panel
+            renderTrace(data);
+
+            // Graph preview
+            renderMiniGraph(data);
+        }
+
+        // ─── RENDER TRACE ───
+        function renderTrace(data) {
+            const container = document.getElementById('traceContent');
+            let html = `
+                <div class="trace-entry">
+                    <div class="header">
+                        <span class="expert-name">Pipeline</span>
+                        <span class="time">${data.processing_time_ms}ms</span>
+                    </div>
+                    <div class="details">
+                        <span>🔢 ${data.total_entities} entities</span>
+                        <span>🔗 ${data.total_relationships} rels</span>
+                        <span>🤖 ${data.model}</span>
+                    </div>
+                </div>
+            `;
+
+            for (const [expert, info] of Object.entries(data.expert_results || {})) {
+                html += `
+                    <div class="trace-entry">
+                        <div class="header">
+                            <span class="expert-name">${expert}</span>
+                        </div>
+                        <div class="details">
+                            <span>${info.entities} entities</span>
+                            <span>${info.relationships} rels</span>
+                        </div>
+                        <div style="margin-top:4px;font-size:11px;color:var(--text-dim)">${info.reasoning || ''}</div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+
+            // Expert breakdown
+            const breakdown = document.getElementById('expertBreakdown');
+            let bdHtml = '';
+            for (const [expert, info] of Object.entries(data.expert_results || {})) {
+                const pct = data.total_entities > 0 ? Math.round((info.entities / data.total_entities) * 100) : 0;
+                bdHtml += `
+                    <div style="margin-bottom:8px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+                            <span>${expert.replace('Expert', '')}</span>
+                            <span style="color:var(--accent)">${info.entities}</span>
+                        </div>
+                        <div style="width:100%;height:4px;background:var(--border);border-radius:2px;">
+                            <div style="width:${pct}%;height:100%;background:var(--accent);border-radius:2px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            breakdown.innerHTML = bdHtml;
+        }
+
+        // ─── MINI GRAPH ───
+        function renderMiniGraph(data) {
+            const canvas = document.getElementById('graphCanvas');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!data.entities.length) return;
+
+            const nodes = data.entities.map((e, i) => {
+                const angle = (2 * Math.PI * i) / data.entities.length;
+                const rx = canvas.width * 0.35;
+                const ry = canvas.height * 0.35;
+                return {
+                    x: canvas.width / 2 + rx * Math.cos(angle),
+                    y: canvas.height / 2 + ry * Math.sin(angle),
+                    name: e.name,
+                    type: e.type,
+                    id: e.id,
+                };
+            });
+
+            const nodeMap = {};
+            nodes.forEach(n => nodeMap[n.id] = n);
+
+            // Draw edges
+            ctx.strokeStyle = 'rgba(99,102,241,0.2)';
+            ctx.lineWidth = 1;
+            (data.relationships || []).forEach(r => {
+                const src = nodeMap[r.source];
+                const tgt = nodeMap[r.target];
+                if (src && tgt) {
+                    ctx.beginPath();
+                    ctx.moveTo(src.x, src.y);
+                    ctx.lineTo(tgt.x, tgt.y);
+                    ctx.stroke();
+                }
+            });
+
+            // Draw nodes
+            const colors = {
+                'Contract': '#6366f1', 'Equipment': '#06b6d4', 'Risk': '#ef4444',
+                'Opportunity': '#22c55e', 'Financial': '#f59e0b', 'Company': '#a855f7',
+                'Tower': '#f97316', 'Person': '#ec4899',
+            };
+
+            nodes.forEach(n => {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = colors[n.type] || '#6366f1';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                ctx.font = '9px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                const label = n.name.length > 12 ? n.name.substring(0, 12) + '…' : n.name;
+                ctx.fillText(label, n.x, n.y + 16);
+            });
+        }
+    </script>
+</body>
+
+</html>
