@@ -194,6 +194,17 @@ if [ $RETRY -eq $MAX_RETRIES ]; then
     echo "  docker-compose ps"
 fi
 
+# Pre-load Ollama model
+log_info "Pre-loading Ollama model (llama3:8b)..."
+log_info "This may take 5-10 minutes. You can SSH in and monitor:"
+echo "  ssh -i $KEY_NAME.pem ubuntu@$PUBLIC_IP"
+echo "  docker exec ecl-ollama ollama list  # Check model status"
+echo ""
+
+# Pull model in background
+ssh -i "$KEY_NAME.pem" "ubuntu@$PUBLIC_IP" "cd ~/ecl && docker-compose exec -T ollama ollama pull llama3:8b" > /dev/null 2>&1 &
+log_success "Model loading started in background"
+
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"
 echo "║                                                                ║"
