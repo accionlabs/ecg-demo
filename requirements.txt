@@ -1,0 +1,14 @@
+# ECL Core Dependencies
+# Minimal dependencies - most functionality uses Python stdlib
+
+# Optional: Streamlit for alternative UI (not required for server)
+streamlit>=1.28.0
+
+# Optional: Graph database drivers
+# falkordb-py>=1.0.0  # FalkorDB Python driver (if using SDK mode)
+
+# Optional: LLM/ML (if running locally with Ollama client)
+requests>=2.31.0
+
+# Development/Testing
+pytest>=7.4.0

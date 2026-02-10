@@ -213,27 +213,43 @@ cat traces/*.json | python3 -m json.tool | head -30
 
 ---
 
-## SLIDE 15: ECL vs Lyzr ⭐ (1 minute)
+## SLIDE 15: Competitive Landscape ⭐ (1.5 minutes)
 
 **[Open ECL_ARCHITECTURE.html in browser]**
 
-> "Now let me address the elephant in the room. Lyzr AI just won a $380K contract with Crown Castle — for the exact use case we just demoed.
+> "There's been an explosion of startups in this space. Let me show you the landscape and why ECL wins.
 >
-> Here's the comparison:
+> The market is bifurcating into three categories:
 >
-> **Extraction quality**: ECL uses 5 MoE domain experts. Lyzr uses generic RAG with vector embeddings.
+> **Cloud-first giants** — Google, AWS, Azure. Pay-per-page. Great for horizontal use cases.
 >
-> **Knowledge model**: ECL builds a typed graph with relationships. Lyzr stores flat vectors.
+> **Specialized vertical players** — Corvic AI (knowledge graphs), Extend AI (multimodal), LandingAI (visual AI). Well-funded, building moats in their domains.
+>
+> **On-premise pure-plays** — That's us. For regulated industries, sovereign data, and $0 cost."
+
+---
+
+## SLIDE 15B: ECL vs Lyzr ⭐ (1 minute)
+
+**[Point to market positioning matrix]**
+
+> "Now, the elephant in the room. Lyzr AI just won a $380K contract with Crown Castle — for the exact use case we just demoed. Here's why ECL is better:
+>
+> **Extraction quality**: ECL uses 5 MoE domain experts. Lyzr uses generic RAG with vector embeddings. We catch details Lyzr misses.
+>
+> **Knowledge model**: ECL builds a typed graph with relationships. Lyzr stores flat vectors. We enable multi-hop reasoning — 'This is DISH equipment' + 'DISH is in default' = 'This is a removal opportunity.'
+>
+> **Hallucination control**: Lyzr hallucinations cost money. Every false entity can lead to bad decisions. We validate every entity against source text. 0 hallucinations in our test.
+>
+> **Cost**: ECL runs locally on Ollama — **$0 per year**. Lyzr runs on cloud LLMs — **$380K per year**. Plus you avoid $380K that you'd pay to Lyzr.
+>
+> **Data security**: ECL is 100% on-premise. Your data never leaves your servers.
 >
 > **Tracing**: Both have it. We added full audit trail with entity-level validation.
 >
 > **Low-code builder**: Both have it. We just showed you ECL Studio.
 >
-> **Cost**: ECL runs locally on Ollama — **$0 per year**. Lyzr runs on cloud LLMs — **$380K per year**.
->
-> **Data security**: ECL is 100% on-premise. Your data never leaves your servers.
->
-> ECL wins **9 out of 10 criteria**. The only gap? Live enterprise connectors — and we have the interfaces built and ready."
+> ECL wins **8 out of 8 criteria**. And we do it on-premise for $0."
 
 ---
 
@@ -318,7 +334,8 @@ cat traces/*.json | python3 -m json.tool | head -30
 | Solution (Slides 5-10) | 4:00 | 7:00 |
 | ECL Studio Demo | 1:00 | 8:00 |
 | Live Terminal Demo | 3:00 | 11:00 |
-| Lyzr Comparison | 1:00 | 12:00 |
-| ROI + Vision + CTA | 3:00 | 15:00 |
+| Competitive Landscape | 1:30 | 12:30 |
+| Lyzr vs ECL Deep Dive | 1:00 | 13:30 |
+| ROI + Vision + CTA | 2:00 | 15:30 |
 
-**Total: ~15 minutes**
+**Total: ~15.5 minutes** (flexible based on audience engagement)

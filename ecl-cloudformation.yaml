@@ -1,0 +1,332 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'ECL Studio - AWS CloudFormation Template for One-Click Deployment'
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t3.medium
+    AllowedValues:
+      - t3.small
+      - t3.medium
+      - t3.large
+    Description: EC2 instance type
+  
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: EC2 Key Pair for SSH access
+    ConstraintDescription: Must be an existing EC2 Key Pair
+
+  EnvironmentName:
+    Type: String
+    Default: ecl-demo
+    Description: Environment name (used for resource naming)
+
+  EnableHTTPS:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+    Description: Enable HTTPS with self-signed certificate
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: EC2 Configuration
+        Parameters:
+          - InstanceType
+          - KeyName
+      - Label:
+          default: Environment Settings
+        Parameters:
+          - EnvironmentName
+          - EnableHTTPS
+
+Resources:
+  # VPC and Networking
+  ECLVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-vpc'
+
+  ECLSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ECLVpc
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-subnet'
+
+  ECLInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-igw'
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref ECLVpc
+      InternetGatewayId: !Ref ECLInternetGateway
+
+  ECLRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ECLVpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-rt'
+
+  ECLRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref ECLRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref ECLInternetGateway
+
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ECLSubnet
+      RouteTableId: !Ref ECLRouteTable
+
+  # Security Group
+  ECLSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ECL Studio
+      VpcId: !Ref ECLVpc
+      SecurityGroupIngress:
+        # SSH
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH access
+        # HTTP
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: HTTP
+        # HTTPS
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: HTTPS
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-sg'
+
+  # IAM Role for EC2
+  ECLInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-role'
+
+  ECLInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref ECLInstanceRole
+
+  # EC2 Instance
+  ECLInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Sub
+        - 'ami-0c02fb55956c7d316'
+        - {}  # Regional lookup would go here
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SubnetId: !Ref ECLSubnet
+      SecurityGroupIds:
+        - !Ref ECLSecurityGroup
+      IamInstanceProfile: !Ref ECLInstanceProfile
+      RootVolumeSize: 50
+      RootVolumeType: gp3
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install Docker
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          rm get-docker.sh
+          
+          # Add ubuntu user to docker group
+          usermod -aG docker ubuntu
+          
+          # Install Docker Compose
+          curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          
+          # Clone ECL repository
+          cd /home/ubuntu
+          sudo -u ubuntu git clone https://github.com/accionlabs/ecg-demo.git ecl
+          cd ecl
+          
+          # Create SSL directory
+          mkdir -p ssl
+          chown -R ubuntu:ubuntu .
+          
+          # Start Docker services
+          sudo -u ubuntu docker-compose up -d
+          
+          # Pre-load Ollama model
+          sleep 30
+          docker exec ecl-ollama ollama pull llama3:8b &
+          
+          # Signal completion
+          echo "ECL Studio deployment complete"
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-instance'
+      Monitoring: true
+
+  # Elastic IP
+  ECLElasticIP:
+    Type: AWS::EC2::EIP
+    DependsOn: AttachGateway
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref ECLInstance
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-eip'
+
+  # CloudWatch Log Group
+  ECLLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/ec2/${EnvironmentName}'
+      RetentionInDays: 7
+
+  # CloudWatch Alarm for High CPU
+  ECLHighCPUAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub '${EnvironmentName}-high-cpu'
+      AlarmDescription: Alert when CPU usage is high
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref ECLInstance
+      AlarmActions:
+        - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:ecl-alerts'
+
+  # CloudWatch Alarm for High Memory (if agent installed)
+  ECLHighMemoryAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub '${EnvironmentName}-high-memory'
+      AlarmDescription: Alert when memory usage is high
+      MetricName: MemoryUtilization
+      Namespace: CWAgent
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref ECLInstance
+      TreatMissingData: NotBreaching
+
+Outputs:
+  InstanceID:
+    Description: EC2 Instance ID
+    Value: !Ref ECLInstance
+    Export:
+      Name: !Sub '${EnvironmentName}-instance-id'
+
+  PublicIP:
+    Description: Public IP address of ECL Studio
+    Value: !Ref ECLElasticIP
+    Export:
+      Name: !Sub '${EnvironmentName}-public-ip'
+
+  HTTPURL:
+    Description: HTTP URL to access ECL Studio
+    Value: !Sub 'http://${ECLElasticIP}'
+
+  SSHCommand:
+    Description: SSH command to connect to instance
+    Value: !Sub 'ssh -i your-key.pem ubuntu@${ECLElasticIP}'
+
+  SecurityGroup:
+    Description: Security Group ID
+    Value: !Ref ECLSecurityGroup
+    Export:
+      Name: !Sub '${EnvironmentName}-sg'
+
+  VPC:
+    Description: VPC ID
+    Value: !Ref ECLVpc
+    Export:
+      Name: !Sub '${EnvironmentName}-vpc'
+
+  LogGroup:
+    Description: CloudWatch Log Group
+    Value: !Ref ECLLogGroup
+    Export:
+      Name: !Sub '${EnvironmentName}-log-group'
+
+  EstimatedMonthlyCost:
+    Description: Estimated monthly cost (EC2 + storage)
+    Value: !Sub
+      - '${Cost} USD/month'
+      - Cost: !If
+          - IsSmallInstance
+          - '20 (t3.small)'
+          - !If
+              - IsLargeInstance
+              - '60 (t3.large)'
+              - '30 (t3.medium)'
+
+Conditions:
+  IsSmallInstance: !Equals [!Ref InstanceType, 't3.small']
+  IsLargeInstance: !Equals [!Ref InstanceType, 't3.large']
+
+Warnings:
+  - This CloudFormation template creates AWS resources that incur costs
+  - Estimated monthly cost: $20-60 depending on instance type
+  - Remember to delete the stack when done to avoid unexpected charges
+  - Use CloudWatch Alarms to monitor resource usage
