@@ -107,7 +107,9 @@ class ECLStudioHandler(SimpleHTTPRequestHandler):
         ollama_ok = False
         if LLM_AVAILABLE:
             try:
-                client = OllamaClient()
+                import os
+                ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+                client = OllamaClient(base_url=ollama_host)
                 ollama_ok = client.is_available()
             except:
                 pass

@@ -679,8 +679,12 @@ class LLMMoEOrchestrator:
     Includes: Pipeline tracing, per-expert timing, confidence guardrails.
     """
 
-    def __init__(self, model: str = "llama3:8b"):
-        self.client = OllamaClient(model=model)
+    def __init__(self, model: str = "llama3:8b", ollama_host: str = None):
+        # Use environment variable or parameter, fallback to localhost
+        import os
+        if ollama_host is None:
+            ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        self.client = OllamaClient(base_url=ollama_host, model=model)
         self.experts: List[LLMBaseExpert] = [
             LLMContractExpert(self.client),
             LLMEquipmentExpert(self.client),
