@@ -38,3 +38,6 @@
 | 2026-02-10 | Flattened ECL repo | Removed embedded git repo from ECL/, merged all 44 files into parent repo |
 | 2026-02-10 | Split into logical commits | 7 commits: core modules, graph schemas, architecture HTML, docs, tests, sample documents, slides |
 | 2026-02-10 | Verified .gitignore | Confirmed no __pycache__, PDFs, DOCX, Lyzr/, or traces/ committed; all modules import/compile |
+| 2026-02-10 00:44 | Containerization audit | Reviewed Dockerfile, docker-compose, CloudFormation, deploy scripts, nginx, server code — found 16 issues (5 critical: server bind bug, CF errors; 6 significant: env vars, missing .dockerignore, requirements gaps) |
+| 2026-02-10 00:47 | Fixed all containerization issues | ecl_server.py bind 0.0.0.0, .dockerignore, ecl_falkordb.py env vars, ecl_app.py OLLAMA_HOST, CloudFormation fixes (BlockDeviceMappings, Ubuntu AMI, Conditions placement, Warnings removal), .env.example, ssl/.gitkeep — 29/29 tests pass |
+

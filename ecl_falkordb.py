@@ -25,9 +25,10 @@ from ecl_poc import (
 class FalkorDBClient:
     """Client wrapper for FalkorDB graph database."""
 
-    def __init__(self, host: str = "localhost", port: int = 6379, graph_name: str = "ecl_graph"):
-        self.host = host
-        self.port = port
+    def __init__(self, host: str = None, port: int = None, graph_name: str = "ecl_graph"):
+        import os
+        self.host = host or os.getenv("FALKORDB_HOST", "localhost")
+        self.port = port or int(os.getenv("FALKORDB_PORT", "6379"))
         self.graph_name = graph_name
         self._db = None
         self._graph = None

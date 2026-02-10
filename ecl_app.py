@@ -69,7 +69,8 @@ st.markdown("""
 def check_ollama():
     try:
         import urllib.request
-        req = urllib.request.Request("http://localhost:11434/api/tags")
+        ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        req = urllib.request.Request(f"{ollama_host}/api/tags")
         resp = urllib.request.urlopen(req, timeout=2)
         data = json.loads(resp.read())
         models = [m["name"] for m in data.get("models", [])]

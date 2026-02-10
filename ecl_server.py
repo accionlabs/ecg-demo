@@ -231,18 +231,19 @@ class ECLStudioHandler(SimpleHTTPRequestHandler):
 
 
 def main():
-    port = 8765
+    host = os.getenv("ECL_HOST", "0.0.0.0")
+    port = int(os.getenv("ECL_PORT", "8765"))
     print("=" * 60)
     print("  🧪 ECL Studio — Low-Code Builder")
     print("=" * 60)
-    print(f"  Server:    http://localhost:{port}")
+    print(f"  Server:    http://{host}:{port}")
     print(f"  LLM:       {'✓ Available' if LLM_AVAILABLE else '○ Regex-only mode'}")
     print(f"  Confidence: {MIN_CONFIDENCE}")
     print(f"  Prompts:   {len(PROMPT_VERSIONS)} versioned")
     print("=" * 60)
     print("  Press Ctrl+C to stop\n")
 
-    server = HTTPServer(('localhost', port), ECLStudioHandler)
+    server = HTTPServer((host, port), ECLStudioHandler)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

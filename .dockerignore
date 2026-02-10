@@ -1,0 +1,63 @@
+# ─── Git / VCS ──────────────────────────────────
+.git/
+.github/
+.gitignore
+
+# ─── Python artifacts ──────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ─── OS / IDE ──────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Competitive intel (do NOT ship) ───────────
+Lyzr/
+
+# ─── Large binaries (not needed at runtime) ───
+*.pdf
+*.docx
+*.HEIC
+The AI Primer.pdf
+ECL Core Concept.docx
+
+# ─── Slides and docs (not needed in container) ─
+slides/
+DEMO_PLAYBOOK.md
+DEPLOYMENT_SUMMARY.md
+DEPLOYMENT_READY.txt
+DEPLOY_NOW.md
+EC2_DEPLOYMENT.md
+AWS_CLI_SETUP.md
+AWS_QUICK_START.md
+README_DEPLOYMENT.md
+MARKET_RESEARCH.md
+ECL_ARCHITECTURE.html
+HEART_BEAT.MD
+
+# ─── Deploy scripts (not needed inside image) ──
+deploy-ec2.sh
+launch-ec2.sh
+ecl-cloudformation.yaml
+docker-compose.yml
+nginx.conf
+
+# ─── Dev/test files ────────────────────────────
+test_ecl.py
+.python-version
+.agent/
+
+# ─── Runtime artifacts (mounted as volumes) ────
+traces/
+
+# ─── Lib (vendored JS, not used by backend) ───
+lib/
