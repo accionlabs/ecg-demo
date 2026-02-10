@@ -35,3 +35,6 @@
 | 2026-02-09 23:25 | Regenerated 7 slide images | slide5 (workflow), slide6 (ETL vs ECL), slide9 (6-layer arch), slide10 (tech pipeline), slide11 (ECL Studio x2), slide15 (ECL vs Lyzr) — HTML→screenshot pipeline |
 | 2026-02-09 23:35 | Git repo initialized + pushed | .gitignore (excludes Lyzr/, __pycache__, PDFs), README.md, pushed to github.com/thedataengineer/EKG |
 | 2026-02-09 23:42 | Streamlit ECL Studio | ecl_app.py — rebuilt UI with Streamlit 1.54 (agraph, plotly, confidence bars), ecl-demo pyenv venv pinned via .python-version |
+| 2026-02-10 | Flattened ECL repo | Removed embedded git repo from ECL/, merged all 44 files into parent repo |
+| 2026-02-10 | Split into logical commits | 7 commits: core modules, graph schemas, architecture HTML, docs, tests, sample documents, slides |
+| 2026-02-10 | Verified .gitignore | Confirmed no __pycache__, PDFs, DOCX, Lyzr/, or traces/ committed; all modules import/compile |
