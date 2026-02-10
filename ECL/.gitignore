@@ -1,0 +1,35 @@
+# ─── Python ────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ─── OS / IDE ──────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Research / Competitive Intel (do NOT upload) ──
+Lyzr/
+
+# ─── Large binaries (reference only) ──────────
+*.pdf
+*.docx
+*.HEIC
+
+# ─── Runtime artifacts ─────────────────────────
+traces/
+
+# ─── Old / superseded slides (keep only _new versions) ──
+slides/slide5_ecl_workflow.png
+slides/slide6_etl_vs_ecl.png
+slides/slide9_architecture.png
+slides/slide9_6layer_architecture.png
+slides/slide9_6layer_architecture_1770649345951.png
+slides/slide10_tech_stack.png
