@@ -44,7 +44,7 @@ python3 -m pytest test_ecl.py -v
 ## Project Structure
 
 ```
-ECL/
+.
 ├── ecl_poc.py              # Core extraction pipeline (5 MoE experts)
 ├── ecl_llm.py              # Ollama LLM integration (model/prompt versioning)
 ├── ecl_falkordb.py          # FalkorDB graph operations
@@ -52,12 +52,13 @@ ECL/
 ├── ecl_connectors.py        # Enterprise connectors (SharePoint, Dynamics 365, ServiceNow)
 ├── ecl_governance.py        # Data governance + retention policies
 ├── ecl_server.py            # ECL Studio backend (zero-dependency HTTP)
-├── ecl_studio.html          # ECL Studio low-code builder UI
+├── ecl_app.py               # Streamlit ECL Studio UI
+├── ecl_studio.html          # ECL Studio low-code builder HTML
 ├── ECL_ARCHITECTURE.html    # ECL vs Lyzr architecture comparison
 ├── test_ecl.py              # Test suite (29 tests)
 ├── DEMO_PLAYBOOK.md         # Demo script (6 acts)
 ├── HEART_BEAT.MD            # Activity log
-├── sample_documents/        # Sample tower site reports
+├── sample_documents/        # Sample infrastructure inspection reports
 ├── lib/                     # Frontend libraries (vis.js, tom-select)
 └── slides/                  # Presentation assets
     ├── PLUSAI_PROMPTS.md     # 18 slide prompts
