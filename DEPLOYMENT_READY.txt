@@ -1,0 +1,248 @@
+╔═════════════════════════════════════════════════════════════════════════════╗
+║                                                                             ║
+║                    ✅ ECL DEMO - DEPLOYMENT READY                          ║
+║                                                                             ║
+║                  Committed & Pushed to GitHub Main Branch                   ║
+║                                                                             ║
+╚═════════════════════════════════════════════════════════════════════════════╝
+
+📦 WHAT'S READY TO DEPLOY
+════════════════════════════════════════════════════════════════════════════
+
+✅ Docker Infrastructure
+   • docker-compose.yml (FalkorDB + Ollama + ECL Studio + Nginx)
+   • Dockerfile (ECL Studio container)
+   • nginx.conf (reverse proxy)
+   • requirements.txt (Python deps)
+
+✅ Deployment Automation
+   • launch-ec2.sh (AWS CLI CloudFormation deployment)
+   • deploy-ec2.sh (Alternative EC2 setup script)
+   • ecl-cloudformation.yaml (IaC template)
+
+✅ Documentation
+   • DEPLOY_NOW.md (⭐ START HERE - 3 minute guide)
+   • AWS_CLI_SETUP.md (AWS CLI installation)
+   • EC2_DEPLOYMENT.md (50-page comprehensive guide)
+   • AWS_QUICK_START.md (5-minute quick start)
+   • DEPLOYMENT_SUMMARY.md (Overview & checklists)
+
+✅ Presentation Materials
+   • SPEAKER_NOTES.md (Updated with competitive landscape)
+   • MARKET_RESEARCH.md (Lyzr, Corvic, Extend, LandingAI analysis)
+   • DEMO_PLAYBOOK.md (Live demo walkthrough)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 TO DEPLOY NOW
+════════════════════════════════════════════════════════════════════════════
+
+1. Install AWS CLI (if not already)
+   → See: AWS_CLI_SETUP.md
+   
+2. Configure AWS Credentials
+   → aws configure
+   
+3. Create EC2 Key Pair (if not already)
+   → aws ec2 create-key-pair --key-name ecl-demo --region us-east-1 \
+       --query 'KeyMaterial' --output text > ecl-demo.pem
+   → chmod 600 ecl-demo.pem
+   
+4. Run Deployment Script
+   → bash launch-ec2.sh
+   
+5. Follow Prompts
+   → Select key pair (ecl-demo)
+   → Confirm parameters
+   → Wait ~25 minutes
+   
+6. Access Demo
+   → Open browser: http://your-public-ip:8765
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💰 COST ESTIMATE
+════════════════════════════════════════════════════════════════════════════════
+
+EC2 (t3.medium):      $30/month
+Storage (50GB gp3):   $5/month
+Data Transfer:        $0-2/month
+Elastic IP:           $3.65/month (optional)
+───────────────────────────────
+TOTAL:                ~$40/month
+
+For 2-week summit:    ~$20
+For 1-month demo:     ~$40
+
+To avoid costs: Delete stack when done
+  → aws cloudformation delete-stack --stack-name $STACK_NAME
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 WHAT GETS DEPLOYED
+════════════════════════════════════════════════════════════════════════════════
+
+EC2 Instance (t3.medium)
+├── FalkorDB (Graph Database)
+├── Ollama (LLM Inference Engine)
+├── ECL Studio (Backend Server)
+├── Nginx (Reverse Proxy)
+├── CloudWatch (Monitoring & Alarms)
+├── Security Group (Ports 22, 80, 443)
+├── IAM Role (EC2 Permissions)
+└── Elastic IP (Static Public IP)
+
+All in one CloudFormation stack, fully automated.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📂 KEY FILES BY PURPOSE
+════════════════════════════════════════════════════════════════════════════════
+
+FOR DEPLOYMENT:
+  • DEPLOY_NOW.md ⭐ (3-minute quick reference)
+  • launch-ec2.sh ⭐ (Run this to deploy)
+  • AWS_CLI_SETUP.md (Install AWS CLI)
+
+FOR UNDERSTANDING:
+  • EC2_DEPLOYMENT.md (Complete reference)
+  • DEPLOYMENT_SUMMARY.md (Overview)
+  • docker-compose.yml (Container config)
+  • ecl-cloudformation.yaml (IaC template)
+
+FOR PRESENTING:
+  • SPEAKER_NOTES.md (Presentation script)
+  • DEMO_PLAYBOOK.md (Demo walkthrough)
+  • MARKET_RESEARCH.md (Competitive analysis)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 AFTER DEPLOYMENT
+════════════════════════════════════════════════════════════════════════════════
+
+1. Access the Demo
+   → Browser: http://your-public-ip:8765
+   → SSH: ssh -i ecl-demo.pem ubuntu@your-ip
+
+2. Test Extraction
+   → Load sample document
+   → Click "Extract Entities"
+   → View results, traces, graph
+
+3. Run Full Demo (15 min)
+   → Follow SPEAKER_NOTES.md
+   → Show competitive positioning
+   → Demonstrate ROI calculation
+
+4. Monitor Deployment
+   → CloudWatch metrics
+   → Docker logs: docker-compose logs -f
+   → Resource usage: docker stats
+
+5. Cleanup When Done
+   → aws cloudformation delete-stack --stack-name $STACK_NAME
+   → Delete key pair (optional)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ WHAT'S INCLUDED
+════════════════════════════════════════════════════════════════════════════════
+
+Frontend:
+  ✅ ECL Studio - Low-code builder UI
+  ✅ Nginx reverse proxy
+  ✅ SSL/HTTPS ready (Let's Encrypt compatible)
+
+Backend:
+  ✅ MoE extraction (5 domain experts)
+  ✅ Entity validation with confidence scores
+  ✅ Hallucination guards
+  ✅ Full pipeline tracing
+
+Database:
+  ✅ FalkorDB - Typed knowledge graph
+  ✅ MCP tools for AI agent integration
+  ✅ Persistent data storage
+
+Infrastructure:
+  ✅ CloudFormation template (IaC)
+  ✅ CloudWatch monitoring
+  ✅ Auto health checks
+  ✅ Auto-scaling ready
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔒 SECURITY FEATURES
+════════════════════════════════════════════════════════════════════════════════
+
+✅ Security Group (restrictive ingress)
+✅ IAM Role (least privilege)
+✅ VPC with private subnets
+✅ Elastic IP (stable access)
+✅ CloudWatch Alarms (CPU, memory, costs)
+✅ HTTPS ready (Let's Encrypt integration in guide)
+✅ Key-based SSH authentication
+✅ No hardcoded secrets
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📋 DEPLOYMENT CHECKLIST
+════════════════════════════════════════════════════════════════════════════════
+
+BEFORE DEPLOYMENT:
+  □ AWS account with EC2 access
+  □ AWS CLI installed (brew install awscli)
+  □ AWS credentials configured (aws configure)
+  □ EC2 key pair created (aws ec2 create-key-pair...)
+  □ Budget alert set up (optional but recommended)
+
+DURING DEPLOYMENT:
+  □ Running: bash launch-ec2.sh
+  □ Selected key pair: ecl-demo
+  □ Confirmed parameters
+  □ Waiting for CloudFormation (status: CREATE_COMPLETE)
+
+AFTER DEPLOYMENT:
+  □ Services healthy: docker-compose ps
+  □ Health check passing: curl http://ip:8765/api/health
+  □ Model loaded: curl http://ip:11434/api/tags
+  □ Browser access works: http://ip:8765
+  □ Can run extraction test
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🆘 NEED HELP?
+════════════════════════════════════════════════════════════════════════════════
+
+Quick Issues:
+  → AWS CLI setup issues: AWS_CLI_SETUP.md
+  → Deployment won't start: EC2_DEPLOYMENT.md (Troubleshooting)
+  → Services not responding: Check docker-compose logs
+  → High costs: Delete stack immediately
+
+Detailed Reference:
+  → EC2_DEPLOYMENT.md (50 pages, everything)
+  → AWS_QUICK_START.md (5-minute version)
+  → DEPLOYMENT_SUMMARY.md (checklists & overview)
+
+AWS Docs:
+  → https://docs.aws.amazon.com/cloudformation/
+  → https://docs.aws.amazon.com/ec2/
+  → https://docs.aws.amazon.com/cli/
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📍 CURRENT STATUS
+════════════════════════════════════════════════════════════════════════════════
+
+Repository:   https://github.com/accionlabs/ecg-demo
+Branch:       main
+Last commit:  deployment infrastructure + market research
+Status:       ✅ READY FOR PRODUCTION
+
+All files committed and pushed. No local changes pending.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎉 NEXT STEP: READ DEPLOY_NOW.md AND RUN: bash launch-ec2.sh
+════════════════════════════════════════════════════════════════════════════════
